@@ -1,9 +1,17 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MP.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="MP.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <style type="text/css">
         .auto-style1 {
             height: 26px;
+            text-align: left;
+        }
+        .auto-style2 {
+            height: 35px;
+            text-align: left;
+        }
+        .auto-style3 {
+            margin-left: 388;
         }
     </style>
 </asp:Content>
@@ -13,18 +21,19 @@
     <h1>Login</h1>
     <table class="w-100">
         <tr>
-            <td style="text-align: left">
+            <td class="auto-style2">
                 <p>
                     Username</p>
             </td>
-            <td>
-                <asp:TextBox ID="txtUsername" runat="server" OnTextChanged="txtUsername_TextChanged"></asp:TextBox>
+            <td class="auto-style2">
+                <asp:TextBox ID="txtUsername" runat="server" OnTextChanged="txtUsername_TextChanged" CssClass="auto-style3"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <td style="text-align: left">Password</td>
-            <td>
+            <td class="text-left">Password</td>
+            <td class="text-left">
                 <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" OnTextChanged="txtPassword_TextChanged"></asp:TextBox>
+                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click">Forgot Password?</asp:LinkButton>
             </td>
         </tr>
         <tr>
@@ -33,6 +42,7 @@
                 <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Login" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:Button ID="btnRegister" runat="server" OnClick="btnRegister_Click" Text="Register" />
+                <asp:Label ID="lblMessage" runat="server"></asp:Label>
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [username], [password] FROM [Users]"></asp:SqlDataSource>
             </td>
         </tr>
