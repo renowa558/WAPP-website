@@ -15,44 +15,6 @@ public partial class Login : System.Web.UI.Page
 
     }
 
-    public Boolean login()
-    {
-        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-        try
-        {
-            con.Open();
-            string query = "select * from Users where username like @username and password = @password;";
-            SqlCommand cmd = new SqlCommand(query, con);
-            //TODO CODE HERE
-            cmd.Parameters.AddWithValue("@username", txtUsername.Text);
-            cmd.Parameters.AddWithValue("@password", txtPassword.Text);
-            //???
-            DataSet ds = new DataSet();
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(ds);
-            con.Close();
-            bool loginSuccessful = ((ds.Tables.Count > 0) && (ds.Tables[0].Rows.Count > 0));
-
-            if (loginSuccessful)
-            {
-                Response.Write("<script type=\"text/javascript\">alert('Login success');</script>");
-                return true;
-            }
-            else
-            {
-                Response.Write("<script type=\"text/javascript\">alert('Invalid username or password');</script>");
-                return false;
-            }
-
-        }
-
-        catch (Exception ex)
-        {
-            Response.Write("Error: " + ex.ToString());
-            return false;
-        }
-    }
-
     protected void txtPassword_TextChanged(object sender, EventArgs e)
     {
 
@@ -60,7 +22,26 @@ public partial class Login : System.Web.UI.Page
 
     protected void btnLogin_Click(object sender, EventArgs e)
     {
-        login();
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+        con.Open();
+        SqlCommand cmd = new SqlCommand("select count(*) from Users where username = '" + txtUsername.Text + "' and password ='" + txtPassword.Text + "'", con);
+        int count = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+        if (count > 0)
+        {
+            SqlCommand cmdType = new SqlCommand("select usertype from Users where username = '" + txtUsername.Text + "'", con);
+            string uType = cmdType.ExecuteScalar().ToString().Replace(" ", "");
+            Session["uType"] = uType;
+
+            Response.Redirect("Home.aspx");
+        }
+        else
+        {
+            lblMessage.ForeColor = System.Drawing.Color.Red;
+            lblMessage.Text = "Login Failed!";
+
+        }
+        con.Close();
     }
     protected void btnRegister_Click(object sender, EventArgs e)
     {
@@ -70,5 +51,10 @@ public partial class Login : System.Web.UI.Page
     protected void txtUsername_TextChanged(object sender, EventArgs e)
     {
 
+    }
+
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("ForgotPassword.aspx");
     }
 }
