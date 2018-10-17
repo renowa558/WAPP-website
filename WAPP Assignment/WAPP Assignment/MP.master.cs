@@ -11,4 +11,9 @@ public partial class MP : System.Web.UI.MasterPage
     {
 
     }
+    protected void Logout_Click(object sender, EventArgs e)
+    {
+        Session.Abandon();
+        Response.Redirect("Home.aspx");
+    }
 }

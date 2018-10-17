@@ -27,7 +27,7 @@ public partial class Login : System.Web.UI.Page
         SqlCommand cmd = new SqlCommand("select count(*) from Users where username = '" + txtUsername.Text + "' and password ='" + txtPassword.Text + "'", con);
         int count = Convert.ToInt32(cmd.ExecuteScalar().ToString());
 
-        if (count > 0)
+        if (count > 0) //there is a matching username and password
         {
             SqlCommand cmdType = new SqlCommand("select usertype from Users where username = '" + txtUsername.Text + "'", con);
             string uType = cmdType.ExecuteScalar().ToString().Replace(" ", "");
@@ -35,7 +35,7 @@ public partial class Login : System.Web.UI.Page
 
             Response.Redirect("Home.aspx");
         }
-        else
+        else //no matching username and passowrd
         {
             lblMessage.ForeColor = System.Drawing.Color.Red;
             lblMessage.Text = "Login Failed!";
